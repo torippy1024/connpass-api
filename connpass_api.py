@@ -21,7 +21,7 @@ def main():
         ymd += datetime.timedelta(days=float(sys.argv[1]))
 
     json_data = get_connpass_json(ymd)
-    with open('today.json', 'w', encoding="UTF-8") as f:
+    with open('build/today.json', 'w', encoding="UTF-8") as f:
         json.dump(json_data, f, ensure_ascii=False)    
 
 
