@@ -1,9 +1,8 @@
 name: deploy
 
 on:
-  push:
-    branches:
-      - master
+  schedule:
+    - cron:  '*/15 * * * *'
 
 jobs:
   deploy:
