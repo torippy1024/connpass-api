@@ -1,26 +1,28 @@
 import requests
 import sys
-import datetime
-from datetime import date
+from datetime import date, datetime, timezone, timedelta
 import json
 
-def get_connpass_json(ymd: date, count: int = 100, order: int = 2):
+def get_connpass_json(ymd: str, count: int = 100, order: int = 2):
     url = "https://connpass.com/api/v1/event/"
-    url += "?ymd="+ymd.isoformat().replace("-", "")+"&count="+str(count)+"&order="+str(order)
+    url += "?ymd="+ymd+"&count="+str(count)+"&order="+str(order)
     print(url)
 
     response = requests.get(url)
     json_data = response.json()
+    print(type(json_data))
 
     return json_data
 
 
 def main():
-    ymd = date.today()
+    JST = timezone(timedelta(hours=+9))
+    ymd = datetime.now(JST)
     if len(sys.argv) > 1 and is_num(sys.argv[1]):
-        ymd += datetime.timedelta(days=float(sys.argv[1]))
+        ymd += timedelta(days=float(sys.argv[1]))
+    ymd_str = ymd.isoformat().split("T")[0].replace("-", "")
 
-    json_data = get_connpass_json(ymd)
+    json_data = get_connpass_json(ymd_str)
     with open('build/today.json', 'w', encoding="UTF-8") as f:
         json.dump(json_data, f, ensure_ascii=False)    
 
