@@ -6,7 +6,7 @@ import os
 
 def get_connpass_json(ymd: str, count: int = 100, order: int = 2):
     url = "https://connpass.com/api/v1/event/"
-    url += "?ymd="+ymd+"&count="+str(count)+"&order="+str(order)
+    url += f"?ymd={ymd}&count={str(count)}&order={str(order)}"
     print(url)
 
     response = requests.get(url)
@@ -19,18 +19,18 @@ def main():
     JST = timezone(timedelta(hours=+9))
     ymd_today = datetime.now(JST)
 
-    dir_build = 'build/v1/'
+    dir_build = "build/v1"
     os.makedirs(dir_build, exist_ok=True)
 
-    dir_events = dir_build + 'events/'    
+    dir_events = f"{dir_build}/events"    
     os.makedirs(dir_events, exist_ok=True)
     for i in range(7):
-        dir_day = dir_events + f'{i}/'
+        dir_day = f"{dir_events}/{i}"
         os.makedirs(dir_day, exist_ok=True)
         ymd = ymd_today + timedelta(days=float(i))
         ymd_str = ymd.isoformat().split("T")[0].replace("-", "")
         json_data = get_connpass_json(ymd_str)
-        with open(f'{dir_day}/index.html', 'w', encoding="UTF-8") as f:
+        with open(f"{dir_day}/index.html", "w", encoding="UTF-8") as f:
             json.dump(json_data, f, ensure_ascii=False)    
 
 
