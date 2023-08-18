@@ -8,7 +8,9 @@ def get_connpass_json(ymd: str, count: int = 100, order: int = 2):
     url += f"?ymd={ymd}&count={str(count)}&order={str(order)}"
     print(url)
 
-    response = requests.get(url)
+    response = requests.get(url, headers={
+        'User-Agent': "Connpass Hot Event"
+    })
     json_data = response.json()
 
     return json_data
